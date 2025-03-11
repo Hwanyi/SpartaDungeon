@@ -12,8 +12,10 @@ public class PlayerController : MonoBehaviour
     public float jumpPower;
     private Vector2 curMovementInput;
     public LayerMask groundLayerMask;
-    [SerializeField]
-    private float jumpDetectionRange = 1f;
+    public float useStaminaForRun;
+    private bool isRun;
+
+    private float jumpDetectionRange = 0.1f;
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -26,9 +28,12 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody _rigidbody;
 
+    private Animator _animator;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        _animator = GetComponentInChildren<Animator>();
         moveSpeed = defaultSpeed;
     }
 
@@ -36,11 +41,21 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        isRun = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isRun)
+        {
+            if (PlayerManager.Instance.Player.condition.UseStamina(useStaminaForRun * Time.deltaTime))
+                moveSpeed = runSpeed;
+            else
+                moveSpeed = defaultSpeed;
+        }
+        else
+            moveSpeed = defaultSpeed;
         Move();
     }
 
@@ -59,6 +74,11 @@ public class PlayerController : MonoBehaviour
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
+
+        if (_rigidbody.velocity.magnitude > 0.2f)
+            _animator.SetBool("IsMoving", true);
+        else
+            _animator.SetBool("IsMoving", false);
     }
 
     void CameraLook()
@@ -96,15 +116,17 @@ public class PlayerController : MonoBehaviour
 
     public void OnRun(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
-        {
-            moveSpeed = runSpeed;
-        }
-
         if (context.phase == InputActionPhase.Canceled)
         {
-            moveSpeed = defaultSpeed;
+            isRun = false;
+            return;
         }
+
+        if (context.phase == InputActionPhase.Performed)
+        {
+            isRun = true;
+        }
+        
     }
 
     bool IsGrounded()
