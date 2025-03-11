@@ -667,6 +667,7 @@ GameObject:
   m_Component:
   - component: {fileID: 839067666}
   - component: {fileID: 839067667}
+  - component: {fileID: 839067668}
   m_Layer: 0
   m_Name: TriggerZone
   m_TagString: Untagged
@@ -710,6 +711,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &839067668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839067665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4398ccdd842bb134b8f6d2f1b98eef59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpPower: 1000
 --- !u!1001 &852723226
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -25,10 +25,10 @@ public class PlayerCondition : MonoBehaviour
     void Update()
     {
         if(Time.time - curDamageTime > recoveryHpTime)
-            health.AddValue(health.passiveValue);
+            health.AddValue(health.passiveValue * Time.deltaTime);
         
         if (Time.time - curStaminaTime > recoveryStaminaTime)
-            stamina.AddValue(stamina.passiveValue);
+            stamina.AddValue(stamina.passiveValue * Time.deltaTime);
     }
 
     public void GetDamage(float value)
